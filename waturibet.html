@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WaturiBet - Legit Sports Betting</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="bg-gray-950 text-white min-h-screen">
+  <nav class="bg-black p-4 flex justify-between items-center">
+    <div class="text-2xl font-bold text-green-500">WaturiBet</div>
+    <div class="flex gap-6">
+      <a href="#" class="hover:text-green-400">Sports</a>
+      <a href="#" class="hover:text-green-400">Live</a>
+      <a href="#" class="hover:text-green-400">Casino</a>
+    </div>
+    <div class="flex items-center gap-4">
+      <div id="balance" class="font-mono">KSh 0.00</div>
+      <button onclick="showDeposit()" class="bg-green-600 px-6 py-2 rounded-lg hover:bg-green-500">Deposit</button>
+      <button onclick="showWithdraw()" class="bg-yellow-600 px-6 py-2 rounded-lg hover:bg-yellow-500">Withdraw</button>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto p-6">
+    <h1 class="text-4xl font-bold mb-8">Featured Matches</h1>
+    
+    <!-- Sample Match -->
+    <div class="bg-gray-900 rounded-xl p-6 mb-6 flex justify-between items-center">
+      <div>
+        <p class="text-sm text-gray-400">Premier League • Today</p>
+        <div class="flex gap-8 mt-3">
+          <div>
+            <p class="font-semibold">Manchester United</p>
+            <button onclick="placeBet(this)" class="mt-2 bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-xl text-lg font-bold">2.45</button>
+          </div>
+          <div class="text-center self-center">
+            <p class="text-green-400 text-xl">VS</p>
+          </div>
+          <div class="text-right">
+            <p class="font-semibold">Liverpool</p>
+            <button onclick="placeBet(this)" class="mt-2 bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-xl text-lg font-bold">3.10</button>
+          </div>
+        </div>
+      </div>
+      <div class="text-right">
+        <p class="text-2xl font-bold">Draw @ 3.80</p>
+      </div>
+    </div>
+
+    <!-- More matches would go here -->
+  </div>
+
+  <!-- Deposit Modal -->
+  <div id="depositModal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center">
+    <div class="bg-gray-900 p-8 rounded-2xl max-w-md w-full">
+      <h2 class="text-2xl mb-6">Deposit Funds</h2>
+      <p class="text-green-400 mb-4">Minimum: KSh 10 | Maximum: KSh 100,000</p>
+      <input id="depAmount" type="number" placeholder="Amount in KSh" class="w-full bg-gray-800 p-4 rounded-xl text-xl mb-4">
+      <select class="w-full bg-gray-800 p-4 rounded-xl mb-6">
+        <option>M-Pesa</option>
+        <option>Bank Transfer</option>
+        <option>Card (Visa/Master)</option>
+      </select>
+      <button onclick="processDeposit()" class="w-full bg-green-600 py-4 rounded-xl text-xl font-bold">Deposit (Free)</button>
+      <button onclick="hideModals()" class="mt-4 w-full py-3 text-gray-400">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Withdraw Modal -->
+  <div id="withdrawModal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center">
+    <div class="bg-gray-900 p-8 rounded-2xl max-w-md w-full">
+      <h2 class="text-2xl mb-6">Withdraw Funds</h2>
+      <p class="text-yellow-400 mb-4">5% Tax | Min: KSh 50 | Max: KSh 300,000/day</p>
+      <input id="withAmount" type="number" placeholder="Amount in KSh" class="w-full bg-gray-800 p-4 rounded-xl text-xl mb-4">
+      <button onclick="processWithdraw()" class="w-full bg-yellow-600 py-4 rounded-xl text-xl font-bold">Request Withdrawal</button>
+      <button onclick="hideModals()" class="mt-4 w-full py-3 text-gray-400">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    let balance = 1250.50;
+
+    function updateBalance() {
+      document.getElementById('balance').textContent = `KSh ${balance.toFixed(2)}`;
+    }
+
+    function showDeposit() { document.getElementById('depositModal').classList.remove('hidden'); }
+    function showWithdraw() { document.getElementById('withdrawModal').classList.remove('hidden'); }
+    function hideModals() {
+      document.getElementById('depositModal').classList.add('hidden');
+      document.getElementById('withdrawModal').classList.add('hidden');
+    }
+
+    function processDeposit() {
+      const amt = parseFloat(document.getElementById('depAmount').value);
+      if (amt >= 10 && amt <= 100000) {
+        balance += amt;
+        updateBalance();
+        alert(`Deposit of KSh ${amt} successful! (Free)`);
+        hideModals();
+      } else alert("Invalid amount");
+    }
+
+    function processWithdraw() {
+      const amt = parseFloat(document.getElementById('withAmount').value);
+      const tax = amt * 0.05;
+      const total = amt + tax;
+      if (amt >= 50 && amt <= 300000 && balance >= total) {
+        balance -= total;
+        updateBalance();
+        alert(`Withdrawal requested: KSh ${amt} (Tax: KSh ${tax.toFixed(2)})`);
+        hideModals();
+      } else alert("Invalid amount or insufficient balance");
+    }
+
+    function placeBet(el) {
+      const odds = parseFloat(el.textContent);
+      const stake = prompt("Enter stake (KSh):");
+      if (stake) alert(`Bet placed @ odds ${odds} for KSh ${stake}`);
+    }
+
+    updateBalance();
+  </script>
+</body>
+</html>
